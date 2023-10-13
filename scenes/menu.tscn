@@ -1,0 +1,167 @@
+[gd_scene load_steps=8 format=3 uid="uid://vaqilpp6uuo3"]
+
+[ext_resource type="FontFile" uid="uid://dv0yocwm2b6co" path="res://assets/Fonts/Roboto-Regular.ttf" id="1_rodx8"]
+
+[sub_resource type="GDScript" id="GDScript_ucnx7"]
+script/source = "extends Control
+
+func _physics_process(delta):
+	check_input()
+	update_soundar()
+
+
+func _on_menu_pressed():
+		get_tree().change_scene_to_file(\"res://scenes/Start_menu.tscn\")
+
+
+func _on_resume_pressed():
+	self.visible = false
+	get_tree().paused = false
+
+
+func _on_exit_pressed():
+	get_tree().quit()
+
+func check_input():
+	if Input.is_action_just_pressed(\"esc\"):
+		if self.visible == false:
+			self.visible = true
+			get_tree().paused = true
+		else:
+			self.visible = false
+			get_tree().paused = false
+
+func update_soundar():
+	$ProgressBar.value = $HSlider.value
+	Global.music_vol = $ProgressBar.value
+"
+
+[sub_resource type="GDScript" id="GDScript_chts5"]
+script/source = "extends HSlider
+
+
+
+
+func _on_mouse_exited():
+	self.release_focus()
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0x34y"]
+bg_color = Color(0, 0, 0, 0.65098)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g8isf"]
+bg_color = Color(0.607843, 0.231373, 0, 0.741176)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f8jen"]
+bg_color = Color(0, 0.501961, 0.145098, 0.741176)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yog8v"]
+bg_color = Color(0.505882, 0, 0, 0.741176)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="menu" type="Control"]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = SubResource("GDScript_ucnx7")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = 1
+layout_mode = 0
+offset_left = -273.0
+offset_top = -508.0
+offset_right = 1453.0
+offset_bottom = 834.0
+color = Color(0, 0, 0, 0.831373)
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+z_index = 1
+layout_mode = 0
+offset_left = 315.0
+offset_top = 14.0
+offset_right = 776.0
+offset_bottom = 68.0
+step = 1.0
+value = 50.0
+rounded = true
+
+[node name="HSlider" type="HSlider" parent="."]
+process_mode = 3
+z_index = -12
+layout_mode = 0
+offset_left = 316.0
+offset_top = 15.0
+offset_right = 776.0
+offset_bottom = 68.0
+script = SubResource("GDScript_chts5")
+
+[node name="Menu" type="Button" parent="."]
+z_index = 1025
+layout_mode = 0
+offset_left = 485.0
+offset_top = 296.0
+offset_right = 679.0
+offset_bottom = 349.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_rodx8")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_0x34y")
+theme_override_styles/hover = SubResource("StyleBoxFlat_g8isf")
+text = "Zurück zum Hauptmenü"
+
+[node name="Resume" type="Button" parent="."]
+z_index = 1025
+layout_mode = 0
+offset_left = 485.0
+offset_top = 190.0
+offset_right = 679.0
+offset_bottom = 243.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_rodx8")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_0x34y")
+theme_override_styles/hover = SubResource("StyleBoxFlat_f8jen")
+text = "Zurück zum Spiel"
+
+[node name="Exit" type="Button" parent="."]
+z_index = 1025
+layout_mode = 0
+offset_left = 485.0
+offset_top = 402.0
+offset_right = 679.0
+offset_bottom = 455.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_rodx8")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_0x34y")
+theme_override_styles/hover = SubResource("StyleBoxFlat_yog8v")
+text = "Beenden"
+
+[connection signal="mouse_exited" from="HSlider" to="HSlider" method="_on_mouse_exited"]
+[connection signal="pressed" from="Menu" to="." method="_on_menu_pressed"]
+[connection signal="pressed" from="Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Exit" to="." method="_on_exit_pressed"]

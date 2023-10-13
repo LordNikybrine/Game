@@ -1,0 +1,91 @@
+[gd_scene load_steps=7 format=3 uid="uid://c8tjvstkrnr5a"]
+
+[ext_resource type="FontFile" uid="uid://dv0yocwm2b6co" path="res://assets/Fonts/Roboto-Regular.ttf" id="1_pxyd1"]
+[ext_resource type="FontFile" uid="uid://b3fbm765yw1lc" path="res://assets/Fonts/Roboto/Roboto-Regular.ttf" id="2_tt3dn"]
+
+[sub_resource type="GDScript" id="GDScript_4j5iw"]
+script/source = "extends Node2D
+
+
+func _ready():
+	Global.spieler_health = 100
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+
+func _on_try_again_pressed():
+	get_tree().change_scene_to_file(\"res://scenes/level1.tscn\")
+
+
+func _on_exit_pressed():
+	get_tree().quit()
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g85bb"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4wf0e"]
+bg_color = Color(0, 0.564706, 0.184314, 0.490196)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_56v8e"]
+bg_color = Color(0.666667, 0, 0, 0.490196)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="Node2D" type="Node2D"]
+script = SubResource("GDScript_4j5iw")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -112.0
+offset_top = -32.0
+offset_right = 1484.0
+offset_bottom = 730.0
+color = Color(0, 0, 0, 1)
+
+[node name="Try again" type="Button" parent="."]
+offset_left = 472.0
+offset_top = 344.0
+offset_right = 666.0
+offset_bottom = 397.0
+theme_override_fonts/font = ExtResource("1_pxyd1")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_g85bb")
+theme_override_styles/hover = SubResource("StyleBoxFlat_4wf0e")
+text = "Try again
+"
+
+[node name="Exit" type="Button" parent="."]
+offset_left = 472.0
+offset_top = 440.0
+offset_right = 666.0
+offset_bottom = 493.0
+theme_override_fonts/font = ExtResource("1_pxyd1")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_g85bb")
+theme_override_styles/hover = SubResource("StyleBoxFlat_56v8e")
+text = "Beenden"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 328)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+self_modulate = Color(0.952941, 0, 0, 1)
+offset_left = 407.0
+offset_top = 162.0
+offset_right = 745.0
+offset_bottom = 237.0
+theme_override_fonts/normal_font = ExtResource("2_tt3dn")
+theme_override_font_sizes/normal_font_size = 61
+text = "GAME OVER"
+
+[connection signal="pressed" from="Try again" to="." method="_on_try_again_pressed"]
+[connection signal="pressed" from="Exit" to="." method="_on_exit_pressed"]

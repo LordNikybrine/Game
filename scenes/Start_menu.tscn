@@ -1,0 +1,256 @@
+[gd_scene load_steps=14 format=3 uid="uid://dcfi0g0lmeaih"]
+
+[ext_resource type="FontFile" uid="uid://dv0yocwm2b6co" path="res://assets/Fonts/Roboto-Regular.ttf" id="2_6ihl2"]
+[ext_resource type="Texture2D" uid="uid://dc5wwnayfe22o" path="res://assets/bg.jpg" id="2_dvsps"]
+
+[sub_resource type="GDScript" id="GDScript_wg7dc"]
+script/source = "extends Control
+
+func _ready():
+	get_tree().paused = false
+	$Menu2/HSlider.value = Global.music_vol
+	Global.spieler_health = 100
+
+func _on_start_pressed():
+	get_tree().change_scene_to_file(\"res://scenes/level1.tscn\")
+
+
+func _physics_process(delta):
+	$Menu2/ProgressBar.value = $Menu2/HSlider.value
+	Global.music_vol = $Menu2/ProgressBar.value
+
+func _on_exit_pressed():
+	get_tree().quit()
+
+
+func _on_menu_pressed():
+	men()
+
+func men():	
+	if $Menu2.visible == false:
+		$Menu2.visible = true
+	else:
+		$Menu2.visible = false
+
+func _on_button_pressed():
+	$Menu2.visible = false
+
+
+func _on_menu_3_pressed():
+	get_tree().change_scene_to_file(\"res://scenes/tutorial.tscn\")
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0akof"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5mo14"]
+bg_color = Color(0, 0, 0, 0.721569)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oa7kt"]
+bg_color = Color(0, 0, 0, 0.721569)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6hxhw"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vpxmg"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sojpb"]
+bg_color = Color(0, 0, 0, 0.721569)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p4fsx"]
+bg_color = Color(0, 0, 0, 0.721569)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5qa5d"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0b7f8"]
+bg_color = Color(0.568627, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="GDScript" id="GDScript_87pkj"]
+script/source = "extends HSlider
+
+
+
+
+func _on_mouse_exited():
+	self.release_focus()
+"
+
+[node name="Start_menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_wg7dc")
+
+[node name="Bg" type="Sprite2D" parent="."]
+position = Vector2(598, 342)
+scale = Vector2(0.718401, 0.718401)
+texture = ExtResource("2_dvsps")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(0.760784, 0.603922, 0.572549, 0.678431)
+layout_mode = 0
+offset_left = -1.0
+offset_top = 2.0
+offset_right = 1155.0
+offset_bottom = 644.0
+expand_mode = 2
+stretch_mode = 4
+
+[node name="Start" type="Button" parent="."]
+process_mode = 3
+layout_mode = 0
+offset_left = 479.0
+offset_top = 165.0
+offset_right = 673.0
+offset_bottom = 218.0
+theme_override_fonts/font = ExtResource("2_6ihl2")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_0akof")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5mo14")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_oa7kt")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6hxhw")
+text = "Start"
+
+[node name="Menu" type="Button" parent="."]
+process_mode = 3
+layout_mode = 0
+offset_left = 479.0
+offset_top = 245.0
+offset_right = 673.0
+offset_bottom = 298.0
+theme_override_fonts/font = ExtResource("2_6ihl2")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_0akof")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5mo14")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_oa7kt")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6hxhw")
+text = "Menü"
+
+[node name="Menu3" type="Button" parent="."]
+process_mode = 3
+layout_mode = 0
+offset_left = 256.0
+offset_top = 165.0
+offset_right = 450.0
+offset_bottom = 218.0
+theme_override_fonts/font = ExtResource("2_6ihl2")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_0akof")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5mo14")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_oa7kt")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6hxhw")
+text = "Tutorial"
+
+[node name="Exit" type="Button" parent="."]
+process_mode = 3
+layout_mode = 0
+offset_left = 479.0
+offset_top = 325.0
+offset_right = 673.0
+offset_bottom = 378.0
+theme_override_fonts/font = ExtResource("2_6ihl2")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_vpxmg")
+theme_override_styles/hover = SubResource("StyleBoxFlat_sojpb")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_p4fsx")
+theme_override_styles/focus = SubResource("StyleBoxFlat_5qa5d")
+text = "Beenden"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(578, 325)
+
+[node name="Menu2" type="Node2D" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="Menu2"]
+z_index = 1
+offset_left = -257.0
+offset_top = -494.0
+offset_right = 1469.0
+offset_bottom = 848.0
+color = Color(0, 0, 0, 0.831373)
+
+[node name="ProgressBar" type="ProgressBar" parent="Menu2"]
+process_mode = 3
+z_index = 1
+offset_left = 376.0
+offset_top = 165.0
+offset_right = 837.0
+offset_bottom = 219.0
+step = 1.0
+value = 50.0
+rounded = true
+
+[node name="Button" type="Button" parent="Menu2"]
+process_mode = 3
+z_index = 1
+offset_left = 64.0
+offset_top = 48.0
+offset_right = 120.0
+offset_bottom = 104.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_0b7f8")
+
+[node name="HSlider" type="HSlider" parent="Menu2"]
+process_mode = 3
+z_index = -12
+offset_left = 377.0
+offset_top = 166.0
+offset_right = 837.0
+offset_bottom = 219.0
+script = SubResource("GDScript_87pkj")
+
+[node name="Camera2D2" type="Camera2D" parent="."]
+position = Vector2(536, 273)
+scale = Vector2(1.1, 1.1)
+limit_left = 0
+limit_top = -85
+limit_smoothed = true
+
+[connection signal="pressed" from="Start" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="Menu" to="." method="_on_menu_pressed"]
+[connection signal="pressed" from="Menu3" to="." method="_on_menu_3_pressed"]
+[connection signal="pressed" from="Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="Menu2/Button" to="." method="_on_button_pressed"]
+[connection signal="mouse_exited" from="Menu2/HSlider" to="Menu2/HSlider" method="_on_mouse_exited"]

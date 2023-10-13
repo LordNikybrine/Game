@@ -1,0 +1,90 @@
+[gd_scene load_steps=7 format=3 uid="uid://vmdbb3k8tmpi"]
+
+[ext_resource type="Texture2D" uid="uid://di4is8xepnv0c" path="res://assets/NPC Sword.png" id="1_hdtqw"]
+
+[sub_resource type="GDScript" id="GDScript_yn5eq"]
+script/source = "extends Node2D
+
+var enemy_in_range = false
+var enemy_reference = null
+var dmg = 20
+
+func _process(delta):
+	check_input()
+
+func _on_area_2d_body_entered(body):
+	if body.has_method(\"enemy\"):
+		enemy_in_range = true
+		enemy_reference = body
+
+func _on_area_2d_body_exited(body):
+	if body.has_method(\"enemy\"):
+		enemy_in_range = false
+		enemy_reference = null
+
+func check_input():
+	if Input.is_action_just_pressed(\"attack\") and enemy_in_range:
+		enemy_reference.get_damage(dmg)
+"
+
+[sub_resource type="Animation" id="Animation_pesgc"]
+resource_name = "ht"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NpcSword:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.97913, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_6e6tc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NpcSword:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_g0u1y"]
+_data = {
+"RESET": SubResource("Animation_6e6tc"),
+"ht": SubResource("Animation_pesgc")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p3do1"]
+size = Vector2(72, 61)
+
+[node name="Sword" type="Node2D"]
+script = SubResource("GDScript_yn5eq")
+
+[node name="NpcSword" type="Sprite2D" parent="."]
+position = Vector2(36, 36)
+scale = Vector2(4.5, 4.5)
+texture = ExtResource("1_hdtqw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_g0u1y")
+}
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(40, 37.5)
+shape = SubResource("RectangleShape2D_p3do1")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
