@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://de8ejdduk3pnu"]
+[gd_scene load_steps=20 format=3 uid="uid://de8ejdduk3pnu"]
 
 [ext_resource type="PackedScene" uid="uid://dwlqkjy2ym77q" path="res://scenes/player.tscn" id="2_y853v"]
 [ext_resource type="Texture2D" uid="uid://bevdiloioupwh" path="res://assets/Sprites/8-Tile-Sets/Tile-Sets (64-64).png" id="3_fpv6p"]
@@ -11,20 +11,23 @@ script/source = "extends Node2D
 
 var player_in_range = false
 var finished = false
+var index = 0
 
 func _ready():
 	Global.spieler_health = 100
-	$CharacterBody2D.no_weapons = true
+	Global.no_weapons = true
+
 
 func _on_area_2d_body_entered(body):
-	var text = $Npc/TextureRect
-	if body.has_method(\"player\"):
-		text.visible = true
+	if body.has_method(\"player\") && index < 1:
 		$Npc/AnimationPlayer.play(\"msg\")
+		index += 1
 
 func _on_animation_player_animation_finished(msg):
 	finished = true
 	$StaticBody2D/CollisionShape2D.disabled = true
+	$Lila.visible = true
+	$Lila/AnimationPlayer.play(\"fade\")
 
 func _on_next_leve_body_entered(body):
 	if body.has_method(\"player\") && finished:
@@ -169,22 +172,12 @@ occlusion_layer_0/light_mask = 1
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_gjl0d")
 
-[sub_resource type="Gradient" id="Gradient_umtve"]
-colors = PackedColorArray(0, 0, 0, 0.54902, 0, 0, 0, 0.54902)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_ovlrj"]
-gradient = SubResource("Gradient_umtve")
-width = 1
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_7pogg"]
-diffuse_texture = SubResource("GradientTexture1D_ovlrj")
-
 [sub_resource type="Animation" id="Animation_dhmeb"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("TextureRect/RichTextLabel:visible_ratio")
+tracks/0/path = NodePath("RichTextLabel:visible_ratio")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -200,7 +193,7 @@ length = 3.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("TextureRect/RichTextLabel:visible_ratio")
+tracks/0/path = NodePath("RichTextLabel:visible_ratio")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -222,6 +215,55 @@ height = 71.4203
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_emgdl"]
 size = Vector2(205.5, 178)
+
+[sub_resource type="Gradient" id="Gradient_lnkwg"]
+offsets = PackedFloat32Array(0, 0.703226)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5v178"]
+gradient = SubResource("Gradient_lnkwg")
+width = 379
+height = 299
+fill = 1
+fill_from = Vector2(0.486239, 0.509174)
+
+[sub_resource type="Animation" id="Animation_34u66"]
+resource_name = "fade"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:energy")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 2.0, 0.1]
+}
+
+[sub_resource type="Animation" id="Animation_qrkwp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:energy")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.36]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wkal0"]
+_data = {
+"RESET": SubResource("Animation_qrkwp"),
+"fade": SubResource("Animation_34u66")
+}
 
 [node name="Tutorial" type="Node2D"]
 script = SubResource("GDScript_5qacl")
@@ -281,32 +323,27 @@ position = Vector2(800, 459)
 scale = Vector2(4.6, 3.69643)
 texture = ExtResource("4_8yqjf")
 
-[node name="TextureRect" type="TextureRect" parent="Npc"]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -65.6522
-offset_top = -64.7343
-offset_right = -23.6522
-offset_bottom = -44.7343
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("CanvasTexture_7pogg")
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Npc"]
+libraries = {
+"": SubResource("AnimationLibrary_kjurg")
+}
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Npc/TextureRect"]
-layout_mode = 1
+[node name="Area2D" type="Area2D" parent="Npc"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Npc/Area2D"]
+position = Vector2(-3.05176e-05, 6.49274)
+shape = SubResource("CapsuleShape2D_ptjfp")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Npc"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -10.0
-offset_right = 603.0
-offset_bottom = 290.0
+offset_left = -64.6522
+offset_top = -64.7343
+offset_right = 558.348
+offset_bottom = 235.266
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.065, 0.065)
@@ -319,17 +356,6 @@ wenn du weiter gehst wirst du verstehen."
 visible_characters = 0
 visible_ratio = 0.0
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Npc"]
-libraries = {
-"": SubResource("AnimationLibrary_kjurg")
-}
-
-[node name="Area2D" type="Area2D" parent="Npc"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Npc/Area2D"]
-position = Vector2(-3.05176e-05, 6.49274)
-shape = SubResource("CapsuleShape2D_ptjfp")
-
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
@@ -337,6 +363,7 @@ z_index = 2
 polygon = PackedVector2Array(-1, 1, 1, -430, -64, -63, -65, 582, 65, 577, 69, 186, 2, 190)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+visible = false
 position = Vector2(1122.25, 531)
 shape = SubResource("RectangleShape2D_emgdl")
 
@@ -346,6 +373,19 @@ shape = SubResource("RectangleShape2D_emgdl")
 position = Vector2(2, 26)
 build_mode = 1
 polygon = PackedVector2Array(1020, 579, 1218, 581, 1220, 720, 1022, 705)
+
+[node name="Lila" type="PointLight2D" parent="."]
+visible = false
+position = Vector2(1125, 587)
+color = Color(0.603922, 0, 0.85098, 1)
+energy = 0.36
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_5v178")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Lila"]
+libraries = {
+"": SubResource("AnimationLibrary_wkal0")
+}
 
 [connection signal="animation_finished" from="Npc/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="Npc/Area2D" to="." method="_on_area_2d_body_entered"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bpvl7f1lrbjrf"]
+[gd_scene load_steps=24 format=3 uid="uid://bpvl7f1lrbjrf"]
 
 [ext_resource type="Texture2D" uid="uid://bevdiloioupwh" path="res://assets/Sprites/8-Tile-Sets/Tile-Sets (64-64).png" id="1_nlvek"]
 [ext_resource type="PackedScene" uid="uid://dwlqkjy2ym77q" path="res://scenes/player.tscn" id="2_0855k"]
@@ -11,6 +11,11 @@ script/source = "extends Node2D
 
 func _ready():
 	$lights/Lila/AnimationPlayer.play(\"fade\")
+
+
+func _on_tutorial_finished_body_entered(body):
+	if body.has_method(\"player\"):
+		get_tree().change_scene_to_file(\"res://scenes/tutorial_finished.tscn\")
 "
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_hlgqi"]
@@ -187,16 +192,31 @@ fill = 1
 fill_from = Vector2(0.463303, 0.490826)
 fill_to = Vector2(0.963303, 0.90367)
 
-[sub_resource type="Gradient" id="Gradient_36apn"]
+[sub_resource type="Gradient" id="Gradient_n24ve"]
 offsets = PackedFloat32Array(0, 0.703226)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_ht6hw"]
-gradient = SubResource("Gradient_36apn")
+gradient = SubResource("Gradient_n24ve")
 width = 379
 height = 299
 fill = 1
 fill_from = Vector2(0.486239, 0.509174)
+
+[sub_resource type="Animation" id="Animation_d1fxu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:energy")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.44]
+}
 
 [sub_resource type="Animation" id="Animation_4yww4"]
 resource_name = "fade"
@@ -215,26 +235,14 @@ tracks/0/keys = {
 "values": [1.44, 0.5, 1.44]
 }
 
-[sub_resource type="Animation" id="Animation_d1fxu"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:energy")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.44]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jm3y0"]
 _data = {
 "RESET": SubResource("Animation_d1fxu"),
 "fade": SubResource("Animation_4yww4")
 }
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n42wu"]
+size = Vector2(194, 8)
 
 [node name="Tutorial2" type="Node2D"]
 script = SubResource("GDScript_38fw8")
@@ -361,3 +369,11 @@ libraries = {
 }
 
 [node name="texts" type="Node2D" parent="."]
+
+[node name="Tutorial_finished" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tutorial_finished"]
+position = Vector2(1120, 637)
+shape = SubResource("RectangleShape2D_n42wu")
+
+[connection signal="body_entered" from="Tutorial_finished" to="." method="_on_tutorial_finished_body_entered"]

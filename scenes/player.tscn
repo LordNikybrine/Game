@@ -65,6 +65,7 @@ var gravity = 2000
 var flip = false
 var previous_health = Global.spieler_health
 var no_weapons = false
+var exited = false
 
 func get_input():
 	velocity.x = 0
@@ -80,12 +81,16 @@ func get_input():
 		velocity.x -= run_speed
 
 func player():
-	pass
+	pass                       #I am the player
+
+
+func _on_animated_sprite_2d_child_exiting_tree(node):
+	exited = true 
+
 
 func _process(delta):
-	if no_weapons:
+	if Global.no_weapons && !exited:
 		$AnimatedSprite2D.remove_child($AnimatedSprite2D/Weapons)
-
 
 func _physics_process(delta):
 	velocity.y += gravity * delta
@@ -130,14 +135,6 @@ func get_damage():
 	if health < previous_health:
 		$AnimatedSprite2D.play(\"hit\")
 	previous_health = health
-
-
-func _on_menu_pressed():
-	pass # Replace with function body.
-
-
-func _on_resume_pressed():
-	pass # Replace with function body.
 "
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4d1th"]
@@ -352,8 +349,8 @@ disabled = true
 
 [node name="Sword" parent="AnimatedSprite2D/Weapons" instance=ExtResource("55_noyk5")]
 z_index = -1
-position = Vector2(9.48685, -25.0108)
-scale = Vector2(0.646831, 0.646831)
+position = Vector2(10.3493, -23.2859)
+scale = Vector2(0.56, 0.56)
 
 [node name="regin_timer" type="Timer" parent="."]
 wait_time = 5.0
@@ -385,5 +382,6 @@ shape = SubResource("RectangleShape2D_ybubj")
 debug_color = Color(0, 0.498039, 0.231373, 0.419608)
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="child_exiting_tree" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_child_exiting_tree"]
 [connection signal="area_entered" from="AnimatedSprite2D/Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="timeout" from="regin_timer" to="." method="_on_regin_timer_timeout"]
