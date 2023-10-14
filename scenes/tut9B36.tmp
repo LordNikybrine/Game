@@ -5,16 +5,16 @@
 [ext_resource type="Texture2D" uid="uid://dwlgxwgxibbql" path="res://assets/npc.png" id="4_8yqjf"]
 [ext_resource type="PackedScene" uid="uid://vaqilpp6uuo3" path="res://scenes/menu.tscn" id="4_jk2t8"]
 [ext_resource type="FontFile" uid="uid://dv0yocwm2b6co" path="res://assets/Fonts/Roboto-Regular.ttf" id="5_2a5qo"]
+[ext_resource type="PackedScene" uid="uid://e5i4vsnqm3tb" path="res://scenes/bald_pirate.tscn" id="6_5ggtq"]
 
 [sub_resource type="GDScript" id="GDScript_5qacl"]
 script/source = "extends Node2D
 
 var player_in_range = false
-var finished = false
 
 func _ready():
 	Global.spieler_health = 100
-	$CharacterBody2D.no_weapons = true
+	
 
 func _on_area_2d_body_entered(body):
 	var text = $Npc/TextureRect
@@ -22,12 +22,9 @@ func _on_area_2d_body_entered(body):
 		text.visible = true
 		$Npc/AnimationPlayer.play(\"msg\")
 
-func _on_animation_player_animation_finished(msg):
-	finished = true
-	$StaticBody2D/CollisionShape2D.disabled = true
 
 func _on_next_leve_body_entered(body):
-	if body.has_method(\"player\") && finished:
+	if body.has_method(\"player\"):
 		get_tree().change_scene_to_file(\"res://scenes/Tutorial2.tscn\")
 "
 
@@ -220,9 +217,6 @@ _data = {
 radius = 31.5217
 height = 71.4203
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_emgdl"]
-size = Vector2(205.5, 178)
-
 [node name="Tutorial" type="Node2D"]
 script = SubResource("GDScript_5qacl")
 
@@ -336,10 +330,6 @@ shape = SubResource("CapsuleShape2D_ptjfp")
 z_index = 2
 polygon = PackedVector2Array(-1, 1, 1, -430, -64, -63, -65, 582, 65, 577, 69, 186, 2, 190)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(1122.25, 531)
-shape = SubResource("RectangleShape2D_emgdl")
-
 [node name="next_leve" type="Area2D" parent="."]
 
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="next_leve"]
@@ -347,6 +337,8 @@ position = Vector2(2, 26)
 build_mode = 1
 polygon = PackedVector2Array(1020, 579, 1218, 581, 1220, 720, 1022, 705)
 
-[connection signal="animation_finished" from="Npc/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[node name="bald_pirate" parent="." instance=ExtResource("6_5ggtq")]
+position = Vector2(505, 536)
+
 [connection signal="body_entered" from="Npc/Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_entered" from="next_leve" to="." method="_on_next_leve_body_entered"]

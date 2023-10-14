@@ -64,6 +64,7 @@ var jump_speed = -900
 var gravity = 2000
 var flip = false
 var previous_health = Global.spieler_health
+var no_weapons = false
 
 func get_input():
 	velocity.x = 0
@@ -80,6 +81,11 @@ func get_input():
 
 func player():
 	pass
+
+func _process(delta):
+	if no_weapons:
+		$AnimatedSprite2D.remove_child($AnimatedSprite2D/Weapons)
+
 
 func _physics_process(delta):
 	velocity.y += gravity * delta
@@ -342,9 +348,11 @@ position = Vector2(25.3333, 0.333333)
 shape = SubResource("RectangleShape2D_kgog4")
 disabled = true
 
-[node name="Sword" parent="AnimatedSprite2D" instance=ExtResource("55_noyk5")]
+[node name="Weapons" type="Node2D" parent="AnimatedSprite2D"]
+
+[node name="Sword" parent="AnimatedSprite2D/Weapons" instance=ExtResource("55_noyk5")]
 z_index = -1
-position = Vector2(11.2117, -22.4235)
+position = Vector2(9.48685, -25.0108)
 scale = Vector2(0.646831, 0.646831)
 
 [node name="regin_timer" type="Timer" parent="."]
