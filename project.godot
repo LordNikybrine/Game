@@ -25,6 +25,10 @@ window/size/initial_screen=1
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/SignalVisualizer/plugin.cfg", "res://addons/project-time-tracker/plugin.cfg")
+
 [global]
 
 PlayerCollision=Vector2(0, 0)
