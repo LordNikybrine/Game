@@ -1,7 +1,20 @@
-[gd_scene load_steps=5 format=3 uid="uid://cqw312bnajlgq"]
+[gd_scene load_steps=6 format=3 uid="uid://cqw312bnajlgq"]
 
 [ext_resource type="Texture2D" uid="uid://dc5wwnayfe22o" path="res://assets/bg.jpg" id="1_xj35w"]
 [ext_resource type="FontFile" uid="uid://dv0yocwm2b6co" path="res://assets/Fonts/Roboto-Regular.ttf" id="2_cf5e1"]
+
+[sub_resource type="GDScript" id="GDScript_6225r"]
+script/source = "extends Control
+
+
+
+func _on_back_to_menu_pressed():
+	get_tree().change_scene_to_file(\"res://scenes/menu.tscn\")
+
+
+func _on_go_to_game_pressed():
+	get_tree().change_scene_to_file(\"res://scenes/Start_menu.tscn\")
+"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5kdkg"]
 bg_color = Color(0, 0, 0, 1)
@@ -16,6 +29,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = SubResource("GDScript_6225r")
 
 [node name="Bg" type="Sprite2D" parent="."]
 position = Vector2(559, 499)
@@ -41,7 +55,7 @@ text = "[center]Herzlichen Glückwunsch!
 Du hast das Tutorial erfolgreich beendet. [/center]"
 fit_content = true
 
-[node name="Button" type="Button" parent="."]
+[node name="BackToMenu" type="Button" parent="."]
 layout_mode = 0
 offset_left = 120.0
 offset_top = 512.0
@@ -50,7 +64,7 @@ offset_bottom = 592.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_5kdkg")
 text = "Zurück zum Hauptmenü"
 
-[node name="Button2" type="Button" parent="."]
+[node name="GoToGame" type="Button" parent="."]
 layout_mode = 0
 offset_left = 704.0
 offset_top = 512.0
@@ -58,3 +72,6 @@ offset_right = 1032.0
 offset_bottom = 592.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_ytsb0")
 text = "Ins Spiel!"
+
+[connection signal="pressed" from="BackToMenu" to="." method="_on_back_to_menu_pressed"]
+[connection signal="pressed" from="GoToGame" to="." method="_on_go_to_game_pressed"]
