@@ -214,7 +214,7 @@ radius = 31.5217
 height = 71.4203
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_emgdl"]
-size = Vector2(205.5, 178)
+size = Vector2(199, 178)
 
 [sub_resource type="Gradient" id="Gradient_lnkwg"]
 offsets = PackedFloat32Array(0, 0.703226)
@@ -226,6 +226,21 @@ width = 379
 height = 299
 fill = 1
 fill_from = Vector2(0.486239, 0.509174)
+
+[sub_resource type="Animation" id="Animation_qrkwp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:energy")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.36]
+}
 
 [sub_resource type="Animation" id="Animation_34u66"]
 resource_name = "fade"
@@ -242,21 +257,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [0.0, 2.0, 0.1]
-}
-
-[sub_resource type="Animation" id="Animation_qrkwp"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:energy")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.36]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wkal0"]
@@ -364,7 +364,7 @@ polygon = PackedVector2Array(-1, 1, 1, -430, -64, -63, -65, 582, 65, 577, 69, 18
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 visible = false
-position = Vector2(1122.25, 531)
+position = Vector2(1125.5, 531)
 shape = SubResource("RectangleShape2D_emgdl")
 
 [node name="next_leve" type="Area2D" parent="."]
