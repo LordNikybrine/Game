@@ -1,4 +1,1 @@
-Hallo Herr Schwaiger, 
-die Scripts habe ich also sogennante "build in scripts" gespeicher.
-Sprich sie werden nicht im Script Ordner zu sehen sein.
-Wenn sie den code dennoch gerne sehen wollen ohne godot zu installieren, kann ich gerne einen ordner mit screenshots oder dem kopiertem code erstellen (ggf. kann ich auch eine Präsentation über die Entwicklung des Spiels halten).
+.
