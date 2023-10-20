@@ -12,12 +12,17 @@
 [sub_resource type="GDScript" id="GDScript_xrf2x"]
 script/source = "extends Node2D
 
+var instance = null
+var weapon = null
 var ready_to_go = false
 
 func _ready():
 	$Fade/AnimationPlayer2.play(\"fade_in\")
 	$menu/HSlider.value = Global.music_vol
 	Global.spieler_health = 100
+	instance = preload(\"res://scenes/Weapons/sword.tscn\")
+	weapon = instance.instantiate()
+	$CharacterBody2D/AnimatedSprite2D/Weapons.add_child(weapon)
 	get_tree().paused = false
 
 @warning_ignore(\"unused_parameter\")

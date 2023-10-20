@@ -96,6 +96,9 @@ size = Vector2(86, 93)
 [node name="Sword" type="Node2D"]
 light_mask = 3
 visibility_layer = 3
+z_index = -1
+position = Vector2(5.89, -23.26)
+scale = Vector2(0.655, 0.655)
 script = SubResource("GDScript_yn5eq")
 
 [node name="NpcSword" type="Sprite2D" parent="."]

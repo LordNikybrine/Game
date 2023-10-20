@@ -15,7 +15,6 @@ var index = 0
 
 func _ready():
 	Global.spieler_health = 100
-	Global.no_weapons = true
 
 
 func _on_area_2d_body_entered(body):
