@@ -10,3 +10,4 @@ func add_level():
 	instance = preload("res://scenes/Start_menu.tscn")
 	menu = instance.instantiate()
 	$InGame.add_child(menu)
+
