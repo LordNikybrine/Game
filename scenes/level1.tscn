@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://c2k1tg6pndyxr"]
+[gd_scene load_steps=30 format=3 uid="uid://c2k1tg6pndyxr"]
 
 [ext_resource type="Texture2D" uid="uid://bevdiloioupwh" path="res://assets/Sprites/8-Tile-Sets/Tile-Sets (64-64).png" id="1_cb5y7"]
 [ext_resource type="PackedScene" uid="uid://b0hbcqr0lvqot" path="res://scenes/candle.tscn" id="2_jb0ag"]
@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://buxenvx2dneu1" path="res://assets/Sprites/7-Objects/12-Other Objects/Barrel.png" id="3_uwhqq"]
 [ext_resource type="PackedScene" uid="uid://e5i4vsnqm3tb" path="res://scenes/bald_pirate.tscn" id="6_iwqm8"]
 [ext_resource type="AudioStream" uid="uid://12h3araa6mer" path="res://sounds/sound.mp3" id="7_lhlkn"]
-[ext_resource type="FontFile" uid="uid://dv0yocwm2b6co" path="res://assets/Fonts/Roboto-Regular.ttf" id="8_yvkko"]
+[ext_resource type="PackedScene" uid="uid://vaqilpp6uuo3" path="res://scenes/menu.tscn" id="8_npyg8"]
 
 [sub_resource type="GDScript" id="GDScript_xrf2x"]
 script/source = "extends Node2D
@@ -23,6 +23,7 @@ func _ready():
 	instance = preload(\"res://scenes/Weapons/sword.tscn\")
 	weapon = instance.instantiate()
 	$CharacterBody2D/AnimatedSprite2D/Weapons.add_child(weapon)
+	Global.level = 1
 	get_tree().paused = false
 
 @warning_ignore(\"unused_parameter\")
@@ -87,7 +88,7 @@ func unlock_next_level():
 
 func _on_area_2d_body_entered(body):
 	if body.has_method(\"player\") && ready_to_go:
-		get_tree().change_scene_to_file(\"res://scenes/level_2.tscn\")
+		get_tree().change_scene_to_file(\"res://scenes/level2.tscn\")
 "
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_goio2"]
@@ -383,44 +384,6 @@ _data = {
 "fade_out": SubResource("Animation_g4fwp")
 }
 
-[sub_resource type="GDScript" id="GDScript_1kd63"]
-script/source = "extends HSlider
-
-
-
-
-func _on_mouse_exited():
-	self.release_focus()
-"
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4dvdy"]
-bg_color = Color(0, 0, 0, 0.65098)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7fnul"]
-bg_color = Color(0.607843, 0.231373, 0, 0.741176)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4c3w4"]
-bg_color = Color(0, 0.501961, 0.145098, 0.741176)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t3msy"]
-bg_color = Color(0.505882, 0, 0, 0.741176)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
 [node name="literally the entire game" type="Node2D"]
 process_mode = 3
 script = SubResource("GDScript_xrf2x")
@@ -561,94 +524,7 @@ position = Vector2(495, 264)
 stream = ExtResource("7_lhlkn")
 autoplay = true
 
-[node name="menu" type="Control" parent="."]
-visible = false
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="ColorRect" type="ColorRect" parent="menu"]
-z_index = 1
-layout_mode = 0
-offset_left = -273.0
-offset_top = -508.0
-offset_right = 1453.0
-offset_bottom = 834.0
-color = Color(0, 0, 0, 0.831373)
-
-[node name="ProgressBar" type="ProgressBar" parent="menu"]
-z_index = 1
-layout_mode = 0
-offset_left = 315.0
-offset_top = 14.0
-offset_right = 776.0
-offset_bottom = 68.0
-step = 1.0
-value = 50.0
-rounded = true
-
-[node name="HSlider" type="HSlider" parent="menu"]
-process_mode = 3
-z_index = -12
-layout_mode = 0
-offset_left = 316.0
-offset_top = 15.0
-offset_right = 776.0
-offset_bottom = 68.0
-script = SubResource("GDScript_1kd63")
-
-[node name="Menu" type="Button" parent="menu"]
-z_index = 1025
-layout_mode = 0
-offset_left = 485.0
-offset_top = 296.0
-offset_right = 679.0
-offset_bottom = 349.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("8_yvkko")
-theme_override_font_sizes/font_size = 16
-theme_override_styles/normal = SubResource("StyleBoxFlat_4dvdy")
-theme_override_styles/hover = SubResource("StyleBoxFlat_7fnul")
-text = "Zurück zum Hauptmenü"
-
-[node name="Resume" type="Button" parent="menu"]
-z_index = 1025
-layout_mode = 0
-offset_left = 485.0
-offset_top = 190.0
-offset_right = 679.0
-offset_bottom = 243.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("8_yvkko")
-theme_override_font_sizes/font_size = 16
-theme_override_styles/normal = SubResource("StyleBoxFlat_4dvdy")
-theme_override_styles/hover = SubResource("StyleBoxFlat_4c3w4")
-text = "Zurück zum Spiel"
-
-[node name="Exit" type="Button" parent="menu"]
-z_index = 1025
-layout_mode = 0
-offset_left = 485.0
-offset_top = 402.0
-offset_right = 679.0
-offset_bottom = 455.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("8_yvkko")
-theme_override_font_sizes/font_size = 16
-theme_override_styles/normal = SubResource("StyleBoxFlat_4dvdy")
-theme_override_styles/hover = SubResource("StyleBoxFlat_t3msy")
-text = "Beenden"
+[node name="menu" parent="." instance=ExtResource("8_npyg8")]
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="animation_finished" from="Fade/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
-[connection signal="mouse_exited" from="menu/HSlider" to="menu/HSlider" method="_on_mouse_exited"]
-[connection signal="pressed" from="menu/Menu" to="." method="_on_menu_pressed"]
-[connection signal="pressed" from="menu/Resume" to="." method="_on_resume_pressed"]
-[connection signal="pressed" from="menu/Exit" to="." method="_on_exit_pressed"]

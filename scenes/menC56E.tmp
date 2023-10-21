@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://vaqilpp6uuo3"]
+[gd_scene load_steps=9 format=3 uid="uid://vaqilpp6uuo3"]
 
 [ext_resource type="FontFile" uid="uid://dv0yocwm2b6co" path="res://assets/Fonts/Roboto-Regular.ttf" id="1_rodx8"]
 
@@ -83,6 +83,13 @@ corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yog8v"]
 bg_color = Color(0.505882, 0, 0, 0.741176)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sjtqj"]
+bg_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -175,7 +182,26 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_0x34y")
 theme_override_styles/hover = SubResource("StyleBoxFlat_yog8v")
 text = "Beenden"
 
+[node name="Save" type="Button" parent="."]
+layout_mode = 0
+offset_left = 523.0
+offset_top = 357.0
+offset_right = 807.0
+offset_bottom = 433.0
+scale = Vector2(0.435, 0.435)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_rodx8")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/normal = SubResource("StyleBoxFlat_sjtqj")
+text = "Speichern"
+
 [connection signal="mouse_exited" from="HSlider" to="HSlider" method="_on_mouse_exited"]
 [connection signal="pressed" from="Menu" to="." method="_on_menu_pressed"]
 [connection signal="pressed" from="Resume" to="." method="_on_resume_pressed"]
 [connection signal="pressed" from="Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="Save" to="." method="_on_save_pressed"]

@@ -1,8 +1,45 @@
-[gd_scene load_steps=2 format=3 uid="uid://ce4bsqmh7f1hg"]
+[gd_scene load_steps=3 format=3 uid="uid://ce4bsqmh7f1hg"]
 
-[ext_resource type="Script" path="res://scenes/game.gd" id="1_4rkqo"]
+[ext_resource type="PackedScene" uid="uid://vaqilpp6uuo3" path="res://scenes/menu.tscn" id="1_25vf1"]
+
+[sub_resource type="GDScript" id="GDScript_yhh8o"]
+script/source = "extends Node2D
+
+var menu = null
+var instance = null
+var save_path = \"user://popel.save\"
+var max_health = Global.spieler_health
+var level = Global.level
+
+func _ready():
+	add_level()
+
+func add_level():
+	instance = preload(\"res://scenes/Start_menu.tscn\")
+	menu = instance.instantiate()
+	$InGame.add_child(menu)
+	$Timer.start()
+
+
+func _on_timer_timeout():
+	var file = FileAccess.open(save_path, FileAccess.WRITE)
+	file.store_var(max_health)
+	file.store_var(level)
+	print(\"saved\")
+"
 
 [node name="Game" type="Node2D"]
-script = ExtResource("1_4rkqo")
+script = SubResource("GDScript_yhh8o")
 
 [node name="InGame" type="Node2D" parent="."]
+
+[node name="menu" parent="." instance=ExtResource("1_25vf1")]
+offset_left = -1.0
+offset_right = 39.0
+
+[node name="Timer" type="Timer" parent="."]
+process_mode = 3
+wait_time = 10.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
