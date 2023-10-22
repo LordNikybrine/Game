@@ -6,7 +6,7 @@
 [sub_resource type="GDScript" id="GDScript_wg7dc"]
 script/source = "extends Control
 
-var save_path = \"user://popel.save\"
+var save_path = \"res://popel.save\"
 var max_health = Global.spieler_health
 var level = Global.level
 
@@ -47,6 +47,7 @@ func _on_menu_3_pressed():
 
 func _on_load_pressed():
 	load_data()
+	print(\"a\")
 
 func load_data():
 	if FileAccess.file_exists(save_path):
@@ -287,8 +288,8 @@ limit_left = 0
 limit_top = -85
 limit_smoothed = true
 
-[connection signal="pressed" from="Start" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="Start" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Menu" to="." method="_on_menu_pressed"]
 [connection signal="pressed" from="Menu3" to="." method="_on_menu_3_pressed"]
 [connection signal="pressed" from="Exit" to="." method="_on_exit_pressed"]

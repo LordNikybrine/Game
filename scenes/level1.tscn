@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://c2k1tg6pndyxr"]
+[gd_scene load_steps=33 format=3 uid="uid://c2k1tg6pndyxr"]
 
 [ext_resource type="Texture2D" uid="uid://bevdiloioupwh" path="res://assets/Sprites/8-Tile-Sets/Tile-Sets (64-64).png" id="1_cb5y7"]
 [ext_resource type="PackedScene" uid="uid://b0hbcqr0lvqot" path="res://scenes/candle.tscn" id="2_jb0ag"]
@@ -15,6 +15,9 @@ script/source = "extends Node2D
 var instance = null
 var weapon = null
 var ready_to_go = false
+var save_path = \"res://popel.save\"
+var max_health = Global.spieler_health
+var level = Global.level
 
 func _ready():
 	$Fade/AnimationPlayer2.play(\"fade_in\")
@@ -23,14 +26,12 @@ func _ready():
 	instance = preload(\"res://scenes/Weapons/sword.tscn\")
 	weapon = instance.instantiate()
 	$CharacterBody2D/AnimatedSprite2D/Weapons.add_child(weapon)
-	Global.level = 1
 	get_tree().paused = false
 
 @warning_ignore(\"unused_parameter\")
 func _process(delta):
 	fade()
 	deactivate()
-	check_input()
 	update_soundar()
 	unlock_next_level()
 
@@ -47,17 +48,6 @@ func fade():
 
 func _on_animation_player_animation_finished(fade_out):
 	get_tree().reload_current_scene()
-
-
-func check_input():
-	if Input.is_action_just_pressed(\"esc\"):
-		if $menu.visible == false:
-			$menu.visible = true
-			get_tree().paused = true
-		else:
-			$menu.visible = false
-			get_tree().paused = false
-
 
 func update_soundar():
 	$menu/ProgressBar.value = $menu/HSlider.value
@@ -89,6 +79,15 @@ func unlock_next_level():
 func _on_area_2d_body_entered(body):
 	if body.has_method(\"player\") && ready_to_go:
 		get_tree().change_scene_to_file(\"res://scenes/level2.tscn\")
+
+
+func _on_checkpoint_body_entered(body):
+	if body.has_method(\"player\"):
+		Global.level = 1
+		var file = FileAccess.open(save_path, FileAccess.WRITE)
+		file.store_var(max_health)
+		file.store_var(level)
+		print(\"saved\")
 "
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_goio2"]
@@ -384,6 +383,20 @@ _data = {
 "fade_out": SubResource("Animation_g4fwp")
 }
 
+[sub_resource type="Gradient" id="Gradient_fwmdo"]
+offsets = PackedFloat32Array(0.269231, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mqcxf"]
+gradient = SubResource("Gradient_fwmdo")
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.502283, 0.506849)
+fill_to = Vector2(0.0456621, 0.785388)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ewp72"]
+size = Vector2(72.5, 14.5)
+
 [node name="literally the entire game" type="Node2D"]
 process_mode = 3
 script = SubResource("GDScript_xrf2x")
@@ -434,7 +447,7 @@ limit_smoothed = true
 [node name="CharacterBody2D" parent="." instance=ExtResource("3_q0inp")]
 process_mode = 1
 z_index = 1
-position = Vector2(174, 351)
+position = Vector2(98, 351)
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
 position = Vector2(136, 753)
@@ -463,7 +476,6 @@ shadow_filter = 2
 shadow_filter_smooth = 2.6
 
 [node name="Fade" type="Control" parent="."]
-visible = false
 z_index = 1
 layout_mode = 3
 anchors_preset = 0
@@ -526,5 +538,20 @@ autoplay = true
 
 [node name="menu" parent="." instance=ExtResource("8_npyg8")]
 
+[node name="Checkpoint" type="Area2D" parent="."]
+
+[node name="PointLight2D4" type="PointLight2D" parent="Checkpoint"]
+position = Vector2(192, 383)
+scale = Vector2(1.23438, 1.1875)
+color = Color(0.470588, 1, 0.501961, 1)
+energy = 1.76
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_mqcxf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoint"]
+position = Vector2(190, 390)
+shape = SubResource("RectangleShape2D_ewp72")
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="animation_finished" from="Fade/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="body_entered" from="Checkpoint" to="." method="_on_checkpoint_body_entered"]

@@ -1,14 +1,40 @@
-[gd_scene load_steps=3 format=3 uid="uid://bkg2qx30ucm31"]
+[gd_scene load_steps=8 format=3 uid="uid://bkg2qx30ucm31"]
 
 [ext_resource type="PackedScene" uid="uid://vaqilpp6uuo3" path="res://scenes/menu.tscn" id="1_e6ff7"]
+[ext_resource type="PackedScene" uid="uid://dwlqkjy2ym77q" path="res://scenes/player.tscn" id="2_0lck0"]
 
 [sub_resource type="GDScript" id="GDScript_ac4l8"]
 script/source = "extends Node2D
 
+var save_path = \"res://popel.save\"
+var max_health = Global.spieler_health
+var level = Global.level
 
-func _ready():
-	Global.level = 2
+func _on_checkpoint_body_entered(body):
+	if body.has_method(\"player\"):
+		Global.level = 2
+		var file = FileAccess.open(save_path, FileAccess.WRITE)
+		file.store_var(max_health)
+		file.store_var(level)
+		print(\"saved\")
 "
+
+[sub_resource type="Gradient" id="Gradient_aomt7"]
+offsets = PackedFloat32Array(0.269231, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kulyo"]
+gradient = SubResource("Gradient_aomt7")
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.502283, 0.506849)
+fill_to = Vector2(0.0456621, 0.785388)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t12nb"]
+size = Vector2(44.7867, 9.11073)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_i1ike"]
+b = Vector2(379.81, 12.6705)
 
 [node name="Level 2" type="Node2D"]
 rotation = -0.022822
@@ -27,3 +53,31 @@ offset_left = -1.02256
 offset_top = 0.976919
 offset_right = 38.9774
 offset_bottom = 40.9769
+
+[node name="Checkpoint" type="Area2D" parent="."]
+position = Vector2(218.492, 200.038)
+scale = Vector2(3.655, 3.655)
+
+[node name="PointLight2D4" type="PointLight2D" parent="Checkpoint"]
+position = Vector2(192, 383)
+scale = Vector2(1.23438, 1.1875)
+color = Color(0.470588, 1, 0.501961, 1)
+energy = 1.76
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_kulyo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoint"]
+position = Vector2(-0.572029, 1.08162)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_t12nb")
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_0lck0")]
+position = Vector2(229.84, 97.2703)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(88.8638, 226.087)
+shape = SubResource("SegmentShape2D_i1ike")
+
+[connection signal="body_entered" from="Checkpoint" to="." method="_on_checkpoint_body_entered"]

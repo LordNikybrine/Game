@@ -13,6 +13,7 @@ var level = Global.level
 
 func _ready():
 	add_level()
+	$Timer.start(5)
 
 func add_level():
 	instance = preload(\"res://scenes/Start_menu.tscn\")
@@ -21,11 +22,11 @@ func add_level():
 	$Timer.start()
 
 
-func _on_timer_timeout():
+'func _on_timer_timeout():
 	var file = FileAccess.open(save_path, FileAccess.WRITE)
 	file.store_var(max_health)
 	file.store_var(level)
-	print(\"saved\")
+	print(\"saved\")'
 "
 
 [node name="Game" type="Node2D"]
