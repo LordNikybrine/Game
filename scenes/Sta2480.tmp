@@ -8,7 +8,6 @@ script/source = "extends Control
 
 var save_path = \"res://popel.save\"
 var max_health = Global.spieler_health
-var level = Global.level
 
 func _ready():
 	get_tree().paused = false
@@ -52,11 +51,10 @@ func load_data():
 		var file = FileAccess.open(save_path, FileAccess.READ)
 		Global.max_health = file.get_var(max_health)
 		Global.level = file.get_var(level)
-		print(max_health)
 	else:
 		print(\"no data saved\")
 	
-	if Global.level == null:
+	if level == null:
 		print(\"error in level save\")
 	
 	load_level()

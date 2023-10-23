@@ -13,6 +13,7 @@ var level = Global.level
 func _on_checkpoint_body_entered(body):
 	if body.has_method(\"player\"):
 		Global.level = 2
+		Global.max_health = 200
 		var file = FileAccess.open(save_path, FileAccess.WRITE)
 		file.store_var(max_health)
 		file.store_var(level)
@@ -68,7 +69,6 @@ texture = SubResource("GradientTexture2D_kulyo")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoint"]
 position = Vector2(-0.572029, 1.08162)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_t12nb")
 
 [node name="CharacterBody2D" parent="." instance=ExtResource("2_0lck0")]
