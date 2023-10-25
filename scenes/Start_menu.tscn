@@ -6,8 +6,6 @@
 [sub_resource type="GDScript" id="GDScript_wg7dc"]
 script/source = "extends Control
 
-var save_path = \"res://popel.save\"
-var max_health = Global.spieler_health
 var level = Global.level
 
 func _ready():
@@ -48,11 +46,14 @@ func _on_load_pressed():
 	load_data()
 
 func load_data():
+	var save_path = \"res://popel.save\"
+	var max_health = Global.spieler_health
 	if FileAccess.file_exists(save_path):
 		var file = FileAccess.open(save_path, FileAccess.READ)
 		Global.max_health = file.get_var(max_health)
 		Global.level = file.get_var(level)
 		print(max_health)
+		print(level)
 	else:
 		print(\"no data saved\")
 	
@@ -62,6 +63,7 @@ func load_data():
 	load_level()
 
 func load_level():
+	var level = Global.level
 	get_tree().change_scene_to_file(\"res://scenes/level\"+str(level)+\".tscn\")
 	print(\"res://scenes/level\"+str(level)+\".tscn\")
 "
@@ -288,8 +290,8 @@ limit_left = 0
 limit_top = -85
 limit_smoothed = true
 
-[connection signal="pressed" from="Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="Start" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="Menu" to="." method="_on_menu_pressed"]
 [connection signal="pressed" from="Menu3" to="." method="_on_menu_3_pressed"]
 [connection signal="pressed" from="Exit" to="." method="_on_exit_pressed"]
